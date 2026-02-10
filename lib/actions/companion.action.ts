@@ -141,7 +141,7 @@ export const addBookmark = async (companionId: string, path: string) => {
     const { data, error } = await supabase.from("bookmarks").upsert({
         companion_id: companionId,
         user_id: userId,
-    }, { onConflict: "companion_id,user_id", ignoreDuplicates: true });
+    }, { onConflict: 'companion_id,user_id', ignoreDuplicates: true });
     if (error) {
         throw new Error(error.message);
     }
