@@ -29,7 +29,7 @@ const Cta = ({
       <div className='cta-badge'>{title}</div>
       <h2 className='text-3xl font-bold'>{header}</h2>
       <p>{content}</p>
-      <Image src={imagePath} alt='cta' width={362} height={232} />
+      <Image src={imagePath} alt='cta' width={362} height={232} priority />
       <button className='btn-primary'>
         <Image src='/icons/plus.svg' alt='plus' width={12} height={12} />
         <Link href={{ pathname: href }}>

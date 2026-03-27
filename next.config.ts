@@ -8,8 +8,7 @@ const nextConfig: NextConfig = {
       { hostname: 'img.clerk.com' }
     ]
   },
-
-  
+  productionBrowserSourceMaps: true,
 };
 
 export default withSentryConfig(withSentryConfig(nextConfig, {

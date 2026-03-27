@@ -43,7 +43,9 @@ const CompanionComponent = ({
         lottieRef.current?.stop();
       }
     }
-    console.log(messages);
+    if (process.env.NODE_ENV === 'development') {
+      console.log(messages);
+    }
   }, [isSpeaking, lottieRef]);
 
   useEffect(() => {
@@ -64,7 +66,11 @@ const CompanionComponent = ({
     const onSpeechStart = () => setIsSpeaking(true);
     const onSpeechEnd = () => setIsSpeaking(false);
 
-    const onError = (error: Error) => console.log("Error", error);
+    const onError = (error: Error) => {
+      if (process.env.NODE_ENV === 'development') {
+        console.log("Error", error);
+      }
+    };
 
     vapi.on("call-start", onCallStart);
     vapi.on("call-end", onCallEnd);
@@ -195,7 +201,9 @@ const CompanionComponent = ({
       <section className='transcript'>
         <div className={`transcript-message no-scrollbar `}>
           {messages.map((message, index) => {
-            console.log(message);
+            if (process.env.NODE_ENV === 'development') {
+              console.log(message);
+            }
 
             if (message.role === "assistant") {
               return (

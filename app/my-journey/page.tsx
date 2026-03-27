@@ -10,20 +10,25 @@ import {
   getUserCompanions,
   getUserSessions,
 } from "@/lib/actions/companion.action";
-import { currentUser } from "@clerk/nextjs/server";
+import { auth, currentUser } from "@clerk/nextjs/server";
 import Image from "next/image";
-export const revalidate = 0;
 import { redirect } from "next/navigation";
+
 const Profile = async () => {
-  const user = await currentUser();
+  // Fast auth check - reads session token, no API call
+  const { userId } = await auth();
+  if (!userId) return redirect("/sign-in?redirect_url=/my-journey");
 
-  if (!user) return redirect("/sign-in");
+  // Parallelize user data fetch with companions data
+  const [user, companions, sessionHistory, bookmarkedCompanions] =
+    await Promise.all([
+      currentUser(),
+      getUserCompanions(userId),
+      getUserSessions(userId),
+      getBookmarkedCompanions(userId),
+    ]);
 
-  const [companions, sessionHistory, bookmarkedCompanions] = await Promise.all([
-    getUserCompanions(user.id),
-    getUserSessions(user.id),
-    getBookmarkedCompanions(user.id),
-  ]);
+  if (!user) return redirect("/sign-in?redirect_url=/my-journey");
 
   return (
     <main className='min-lg:w-3/4 '>

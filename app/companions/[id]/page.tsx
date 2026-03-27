@@ -14,9 +14,11 @@ const CompanionSession = async ({
   const companion = await GetCompanion(id);
   const { name, subject, topic, duration } = companion;
   const user = await currentUser();
-  if (!user) redirect("/sign-in");
+  if (!user) redirect(`/sign-in?redirect_url=/companions/${id}`);
   if (!companion) redirect("/companion/new");
-  console.log(companion);
+  if (process.env.NODE_ENV === "development") {
+    console.log(companion);
+  }
 
   return (
     <main>
